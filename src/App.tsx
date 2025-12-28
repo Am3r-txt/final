@@ -1,9 +1,13 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from "../components/Layout";
+
 import Dashboard from "../pages/Dashboard";
+
 import HabitLog from "../pages/HabitLog";
+
 import Community from "../pages/Community";
+
 import { AppProvider } from "../context/AppContext";
 
 const App: React.FC = () => {
