@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import { ... } from "../types.ts";
+import { Habit } from "../types";
 import { Save, AlertCircle } from 'lucide-react';
 
 const HabitLog: React.FC = () => {
