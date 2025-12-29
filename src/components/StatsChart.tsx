@@ -1,20 +1,32 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { useApp } from '../context/AppContext';
-import { HabitCategory } from '../types';
+import { useApp, HabitCategory } from '../context/AppContext';
+
+// Definimos el tipo localmente para que no dependa de archivos externos
+interface HabitLog {
+  id: string;
+  category: HabitCategory;
+  description: string;
+  impact: number; // Sincronizado: impact en lugar de impactScore
+  date: string;
+}
 
 const COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'];
 
 const StatsChart: React.FC = () => {
   const { logs } = useApp();
 
-  // Aggregate impact score by category
-  const data = Object.values(HabitCategory).map((cat, index) => {
+  // 1. Definimos las categorías manualmente para iterar sobre ellas
+  const categories: HabitCategory[] = ['ahorro', 'reciclaje', 'energia', 'transporte'];
+
+  // 2. Agregamos el puntaje de impacto por categoría
+  const data = categories.map((cat, index) => {
     const totalImpact = logs
       .filter(l => l.category === cat)
-      .reduce((acc, curr) => acc + curr.impactScore, 0);
+      .reduce((acc, curr) => acc + (curr.impact || 0), 0); // Sincronizado: curr.impact
+    
     return {
-      name: cat,
+      name: cat.charAt(0).toUpperCase() + cat.slice(1), // Capitalizamos para que se vea bien
       score: totalImpact,
       fill: COLORS[index % COLORS.length]
     };

@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../context/AppContext';
-interface Habit {
-  id: string;
-  name: string;
-  completed: boolean;
-  date: string;
-}import { Habit } from "../types";
+import { useApp, HabitCategory } from '../context/AppContext';
 import { Save, AlertCircle } from 'lucide-react';
 
 const HabitLog: React.FC = () => {
   const navigate = useNavigate();
   const { addLog } = useApp();
   
+  // 1. Usamos una categoría válida de las que definimos: 'ahorro'
   const [formData, setFormData] = useState({
-    category: HabitCategory.FOOD,
+    category: 'ahorro' as HabitCategory,
     description: '',
-    impactScore: 5
+    impact: 5 // Cambiado de impactScore a impact
   });
 
   const [error, setError] = useState('');
@@ -30,10 +25,11 @@ const HabitLog: React.FC = () => {
       return;
     }
 
+    // 2. Enviamos 'impact' para que coincida con la función addLog del Context
     addLog({
       category: formData.category,
       description: formData.description,
-      impactScore: Number(formData.impactScore)
+      impact: Number(formData.impact)
     });
 
     navigate('/');
@@ -43,6 +39,9 @@ const HabitLog: React.FC = () => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
+
+  // Definimos las opciones manualmente para evitar depender de Enums externos
+  const categories: HabitCategory[] = ['ahorro', 'reciclaje', 'energia', 'transporte'];
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -71,8 +70,8 @@ const HabitLog: React.FC = () => {
               onChange={handleChange}
               className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all bg-white"
             >
-              {Object.values(HabitCategory).map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
               ))}
             </select>
           </div>
@@ -93,21 +92,21 @@ const HabitLog: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="impactScore" className="block text-sm font-semibold text-slate-700">
+            <label htmlFor="impact" className="block text-sm font-semibold text-slate-700">
               Impact Score (1-10)
             </label>
             <div className="flex items-center gap-4">
               <input
                 type="range"
-                id="impactScore"
-                name="impactScore"
+                id="impact"
+                name="impact"
                 min="1"
                 max="10"
-                value={formData.impactScore}
+                value={formData.impact}
                 onChange={handleChange}
                 className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
               />
-              <span className="text-lg font-bold text-emerald-600 w-8 text-center">{formData.impactScore}</span>
+              <span className="text-lg font-bold text-emerald-600 w-8 text-center">{formData.impact}</span>
             </div>
             <p className="text-xs text-slate-400">Rate the positive impact of this activity on the environment.</p>
           </div>
