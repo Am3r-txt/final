@@ -112,7 +112,7 @@ const Dashboard: React.FC = () => {
           {logs.length === 0 ? (
             <div className="p-8 text-center text-slate-500">No activities logged yet. Start today!</div>
           ) : (
-            logs.slice(0, 5).map((log) => (
+            logs.slice(0, 5).map((log: { id: React.Key | null | undefined; description: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; category: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; impactScore: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; date: string | number | Date; }) => (
               <div key={log.id} className="p-4 hover:bg-slate-50 transition-colors flex items-center justify-between">
                 <div>
                   <p className="font-medium text-slate-800">{log.description}</p>
