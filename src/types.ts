@@ -1,3 +1,6 @@
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+
+// Definimos los tipos aquí directamente para evitar errores de importación
 export type HabitCategory = 'ahorro' | 'reciclaje' | 'energia' | 'transporte';
 
 export interface HabitLog {
@@ -14,9 +17,4 @@ export interface UserStats {
   streak: number;
 }
 
-export interface Habit {
-  id: string;
-  name: string;
-  completed: boolean;
-  date: string;
-}
+// Borra la línea 

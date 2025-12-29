@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import { Habit } from "../types";
+interface Habit {
+  id: string;
+  name: string;
+  completed: boolean;
+  date: string;
+}import { Habit } from "../types";
 import { Save, AlertCircle } from 'lucide-react';
 
 const HabitLog: React.FC = () => {
