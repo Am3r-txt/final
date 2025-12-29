@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css';     // Esta es la línea que conecta el diseño
+import './index.css';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
