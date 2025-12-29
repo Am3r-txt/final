@@ -1,39 +1,55 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { HabitLog, HabitCategory, UserStats } from '../types';
+
+// 1. Definición de Tipos
+export type HabitCategory = 'ahorro' | 'reciclaje' | 'energia' | 'transporte';
+
+export interface HabitLog {
+  id: string;
+  category: HabitCategory;
+  description: string;
+  impact: number; // Antes tenías impactScore, lo cambiamos a impact para que coincida
+  date: string;
+}
+
+export interface UserStats {
+  totalImpact: number;
+  completedHabits: number;
+  streak: number;
+}
 
 interface AppContextType {
   logs: HabitLog[];
-  addLog: (log: Omit<HabitLog, 'id' | 'date'>) => void;
   stats: UserStats;
+  addLog: (logData: Omit<HabitLog, 'id' | 'date'>) => void;
   deleteLog: (id: string) => void;
 }
 
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-// Dummy initial data
+// 2. Datos iniciales corregidos
 const INITIAL_LOGS: HabitLog[] = [
-  { id: '1', category: HabitCategory.FOOD, description: 'Ate a fully vegetarian lunch', impactScore: 5, date: new Date().toISOString() },
-  { id: '2', category: HabitCategory.TRANSPORT, description: 'Cycled to work instead of driving', impactScore: 8, date: new Date().toISOString() },
+  { id: '1', category: 'ahorro', description: 'Uso de bolsas reutilizables', impact: 5, date: new Date().toISOString() },
+  { id: '2', category: 'transporte', description: 'Caminé al trabajo', impact: 8, date: new Date().toISOString() },
 ];
+
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [logs, setLogs] = useState<HabitLog[]>(INITIAL_LOGS);
-  const [stats, setStats] = useState<UserStats>({ totalLogs: 0, totalScore: 0, streak: 3 });
+  const [stats, setStats] = useState<UserStats>({ totalImpact: 0, completedHabits: 0, streak: 3 });
 
   useEffect(() => {
-    // Recalculate stats whenever logs change
-    const totalScore = logs.reduce((acc, log) => acc + log.impactScore, 0);
+    // Cálculo de estadísticas
+    const totalImpact = logs.reduce((acc, log) => acc + log.impact, 0);
     setStats({
-      totalLogs: logs.length,
-      totalScore,
-      streak: logs.length > 0 ? 3 + Math.floor(logs.length / 5) : 0 // Mock streak logic
+      totalImpact,
+      completedHabits: logs.length,
+      streak: logs.length > 0 ? 3 + Math.floor(logs.length / 5) : 0
     });
   }, [logs]);
 
   const addLog = (logData: Omit<HabitLog, 'id' | 'date'>) => {
     const newLog: HabitLog = {
       ...logData,
-      id: Math.random().toString(36).substr(2, 9),
+      id: Math.random().toString(36).substring(2, 9),
       date: new Date().toISOString(),
     };
     setLogs(prev => [newLog, ...prev]);
